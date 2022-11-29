@@ -17,6 +17,7 @@ const onSubmitClick = event => {
     alert('All filds of the form must be filled!');
   } else {
     localStorage.removeItem(FORM_KEY_LS);
+    localStorage.removeItem('MESSAGE');
     console.log(formData);
     refs.form.reset();
   }
@@ -25,28 +26,39 @@ const onSubmitClick = event => {
 const onInputSetValueInLS = event => {
   if (event.target.value.trim() !== '') {
     formData[event.target.name] = event.target.value;
-    localStorage.setItem(FORM_KEY_LS, JSON.stringify(formData));
+    const { email, message } = formData;
+    if (email) {
+      localStorage.setItem(FORM_KEY_LS, email);
+    }
+    if (message) {
+      localStorage.setItem('MESSAGE', message);
+    }
   }
 };
 
-const checkLS = parsedFormData => {
-  if (parsedFormData === null) {
-    return;
+const filledEmailFilld = emailFromLS => {
+  if (emailFromLS !== undefined) {
+    refs.email.value = emailFromLS;
+  } else {
+    refs.email.value = '';
   }
-  if (parsedFormData.email !== '') {
-    refs.email.value = parsedFormData.email;
-  }
-  if (parsedFormData.message !== '') {
-    refs.message.value = parsedFormData.message;
+};
+
+const filledMessageFilld = messageFromLS => {
+  if (messageFromLS !== undefined) {
+    refs.message.value = messageFromLS;
+  } else {
+    refs.message.value = '';
   }
 };
 
 getFormDataFromLS();
 
 function getFormDataFromLS() {
-  const sevedFormData = localStorage.getItem(FORM_KEY_LS);
-  const parsedFormData = JSON.parse(sevedFormData);
-  checkLS(parsedFormData);
+  const emailFromLS = localStorage.getItem(FORM_KEY_LS);
+  const messageFromLS = localStorage.getItem('MESSAGE');
+  filledEmailFilld(emailFromLS);
+  filledMessageFilld(messageFromLS);
 }
 
 refs.form.addEventListener('input', throttle(onInputSetValueInLS, 500));
