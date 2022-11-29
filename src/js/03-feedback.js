@@ -39,6 +39,7 @@ const onInputSetValueInLS = event => {
 const filledEmailFilld = emailFromLS => {
   if (emailFromLS !== undefined) {
     refs.email.value = emailFromLS;
+    formData.email = refs.email.value;
   } else {
     refs.email.value = '';
   }
@@ -47,6 +48,7 @@ const filledEmailFilld = emailFromLS => {
 const filledMessageFilld = messageFromLS => {
   if (messageFromLS !== undefined) {
     refs.message.value = messageFromLS;
+    formData.message = refs.message.value;
   } else {
     refs.message.value = '';
   }
